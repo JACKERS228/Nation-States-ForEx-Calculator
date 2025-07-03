@@ -1,0 +1,1 @@
+This is a currency converter for the online game NationStates.
