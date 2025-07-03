@@ -1,6 +1,7 @@
 import requests as rq
 import gzip as gz
 import os
+import json as js
 
 URLS = ["https://www.nationstates.net/pages/nations.xml.gz","https://www.nationstates.net/pages/regions.xml.gz"]
 DUMP_DIR = "dumps"
