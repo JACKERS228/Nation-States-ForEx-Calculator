@@ -27,13 +27,11 @@ def main():
 
     nationsdata = nationsroot.findall('NATION')
 
-    perd_nations:list[str] = []
-    script_nations:list[SN] = []
-
     ### Main user loop
     while True:
         u.cs()
-        nation1 = api.nation(input("Please input the first nation: ")) # User inputs EXACT name of the nation
+        name1 = input("Please input the first nation's name: ")
+        nation1 = api.nation(nation_name=name1) # User inputs EXACT name of the nation
         try:
             u.cs()
             print("Loading...")
@@ -50,7 +48,8 @@ def main():
             print("An error occurred: Make sure you spelled the nation name exactly as it appears in NationStates! Also check to see if the nation still exists as of yesterday at 11:59pm|23:00 your time.")
         
         u.cs()
-        nation2 = api.nation(input("Now the second nation: "))
+        name2 = input("Now the second nation: ")
+        nation2 = api.nation(name2)
         try:
             u.cs()
             print("Loading...")
