@@ -1,10 +1,19 @@
 import requests as rq
 import gzip as gz
 import os
+import sys
 import json as js
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 URLS = ["https://www.nationstates.net/pages/nations.xml.gz","https://www.nationstates.net/pages/regions.xml.gz"]
-DUMP_DIR = "dumps"
+
+DUMP_DIR = resource_path("dumps")
 
 def download_daily_dumps(urls:list[str]=URLS,save_dir=DUMP_DIR,filename=None):
     print("Fetching daily dump files from NationStates...")
@@ -32,6 +41,7 @@ def extract_data(files,extract_dirs:list[str]):
     print("Extracting XML data from dump files...")
     for file, dest in zip(files,extract_dirs):
         try:
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             with gz.open(file,"rb") as f_in:
                 with open(dest,"wb") as f_out:
                     f_out.write(f_in.read())
@@ -42,8 +52,8 @@ def extract_data(files,extract_dirs:list[str]):
 
 
 def main():
-    regions_zip_file_path = r"dumps\regions.xml.gz"
-    nations_zip_file_path = r"dumps\nations.xml.gz"
+    regions_zip_file_path = os.path.join(DUMP_DIR,"regions.xml.gz")
+    nations_zip_file_path = os.path.join(DUMP_DIR,"nations.xml.gz")
     download_daily_dumps()
 
-    extract_data(files=[nations_zip_file_path,regions_zip_file_path],extract_dirs=[r"dumps\nations.xml",r"dumps\regions.xml"])
+    extract_data(files=[nations_zip_file_path,regions_zip_file_path],extract_dirs=[os.path.join(DUMP_DIR,"nations.xml"),os.path.join(DUMP_DIR,"regions.xml")])

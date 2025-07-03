@@ -11,15 +11,17 @@ def main():
     import xml
     import xml.etree
     import xml.etree.ElementTree as ET
+    import os
+    from fetch import DUMP_DIR
     from nation import ScriptNation as SN
     u.cs()
     if input(f"Update dumps from NationStates? (y/n) ").capitalize() == "Y":
-        f.download_daily_dumps(urls=f.URLS)
+        f.main()
     else:
         pass
     u.cs()
     print("Loading...")
-    nationstree = ET.parse(r"dumps\nations.xml")
+    nationstree = ET.parse(os.path.join(DUMP_DIR,"nations.xml"))
     nationsroot = nationstree.getroot()
     perdition = api.region("the Plains of Perdition")
 
