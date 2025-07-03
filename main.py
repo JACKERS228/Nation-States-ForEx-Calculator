@@ -27,31 +27,23 @@ def main():
     perd_nations:list[str] = []
     script_nations:list[SN] = []
 
-    for element in nationsdata:
-        if element.findtext("REGION") == "the Plains of Perdition":
-            perd_nations.append(element.findtext("NAME"))
+    ### Main user loop
+    nation1 = api.nation(input("Please input the first nation:")) # User inputs EXACT name of the nation
+    for nation in nationsdata:
+        if nation.findtext("NAME") == nation1.nation_name:
+            nation1_class = SN.create_sc_nat(name=nation.findtext("NAME"),currency=nation.findtext("CURRENCY"),avg_inc=float(nation1.get_shards(ns.Shard("census",scale="72",mode="score"))['census']['scale']['score']))
+            print(nation1_class.name, nation1_class.currency, nation1_class.avg_ann_inc)
             continue
-            print(f"Region: {element.findtext('REGION')} Nation: {element.findtext('NAME')}")
 
-    ec_values:dict = {}
-    if TEST_MODE is True:
-        for nation in perd_nations:
-            focus = api.nation(nation)
-            script_nations.append(SN.create_sc_nat(name=nation,avg_inc=focus.get_shards(ns.Shard("census",scale="72",mode="score"))['census']['scale']['score']))
-            sys.exit(1)
-        else:
-            pass
-    if TEST_MODE is False:
-        for nation in perd_nations:
+    nation2 = api.nation(input("Now the second nation: "))
+    for nation in nationsdata:
+        if nation.findtext("NAME") == nation2.nation_name:
+                nation2_class = SN.create_sc_nat(name=nation.findtext("NAME"),currency=nation.findtext("CURRENCY"),avg_inc=float(nation2.get_shards(ns.Shard("census",scale="72",mode="score"))['census']['scale']['score']))
+                print(nation2_class.name, nation2_class.currency, nation2_class.avg_ann_inc)
+                continue
     
-            focus = api.nation(nation)
-            script_nations.append(SN.create_sc_nat(name=nation,avg_inc=focus.get_shards(ns.Shard("census",scale="72",mode="score"))['census']['scale']['score']))
+    nation1_class.calculate_exchange_rate(nation2_class)
+    
             
-
-            
-
-
-        
-
 if __name__ == "__main__":
     print(main())
